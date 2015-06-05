@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include "FileReader.h"
 
 #ifndef WIN32
 	#include <stdio.h>
@@ -69,7 +70,14 @@ bool FileBuilder::Append(FileReader& reader)
 {
 	if (_fhandle == -1)
 		return false;
-	lseek(_fhandle, 0, SEEK_END);
+
+	/* Seek to the end (append) */
+	if (lseek(_fhandle, 0, SEEK_END) == -1)
+		return false;
+
+	if (!reader.Good())
+		return false;
+
 	return write(_fhandle, reader.GetContents(), reader.GetSize()) == reader.GetSize();
 }
 
@@ -82,8 +90,6 @@ void FileBuilder::PrintError()
 FileBuilder::~FileBuilder()
 {
 	if (_fhandle != -1)
-	{
 		close(_fhandle);
-	}
 }
 
