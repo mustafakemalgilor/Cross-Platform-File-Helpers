@@ -10,3 +10,7 @@ Currently supported operations;
 
 TODO :
  - FileWriter class will be available soon.
+ 
+ Usage : 
+ - copy headers and include FileOperations.h in your project
+ 
